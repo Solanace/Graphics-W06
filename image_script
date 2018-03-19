@@ -1,0 +1,38 @@
+// Torii
+torus
+0 0 0 10 140
+ident
+rotate
+z 90
+apply
+torus
+0 0 0 10 200
+ident
+rotate
+x 90
+apply
+torus
+0 0 0 10 170
+sphere
+0 0 0 50
+// Connecting lines
+box
+-10 140 10 20 280 20
+// Z
+box
+-10 10 220 20 20 50
+box
+-10 10 -170 20 20 50
+ident
+rotate
+x 30
+rotate
+y 30
+rotate
+z 30
+move
+250 250 0
+apply
+display
+save
+pic.png
