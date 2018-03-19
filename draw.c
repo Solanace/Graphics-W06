@@ -62,7 +62,13 @@ void add_box( struct matrix * edges,
 void add_sphere( struct matrix * edges, 
                  double cx, double cy, double cz,
                  double r, int step ) {
-	return NULL;
+	struct matrix *points = generate_sphere(cx, cy, cz, r, step);
+	//print_matrix(points);
+	int i;
+	for (i = 0; i < points->lastcol; i ++) {
+		add_edge(edges, points->m[0][i], points->m[1][i], points->m[2][i], 
+		            1 + points->m[0][i], points->m[1][i], points->m[2][i]);
+	}
 }
 
 /*======== void generate_sphere() ==========
@@ -79,11 +85,24 @@ void add_sphere( struct matrix * edges,
   ====================*/
 struct matrix * generate_sphere(double cx, double cy, double cz,
                                 double r, int step ) {
-	// Rotating about x-axis
-	int i;
-	for (i = 0; i <= step; i ++) {
-		
+	int size = (step + 1) * (step / 2 + 1);
+	struct matrix *points = new_matrix(4, size);
+	int p, t, i;
+	i = 0;
+	for (p = 0; p <= step; p ++) {
+		double p_rad = 2 * M_PI * p / step;
+		for (t = 0; t <= step / 2; t ++) {
+			//printf("%d, %d, %d\n", p, t, i);
+			double t_rad = 2 * M_PI * t / step;
+			points->m[0][i] = cx + r * cos(t_rad);
+			points->m[1][i] = cy + r * sin(t_rad) * cos(p_rad);
+			points->m[2][i] = cz + r * sin(t_rad) * sin(p_rad);
+			points->m[3][i] = 1;
+			i ++;
+		}
 	}
+	points->lastcol = size;
+	return points;
 }
 
 /*======== void add_torus() ==========
@@ -105,6 +124,13 @@ struct matrix * generate_sphere(double cx, double cy, double cz,
 void add_torus( struct matrix * edges, 
                 double cx, double cy, double cz,
                 double r1, double r2, int step ) {
+	struct matrix *points = generate_torus(cx, cy, cz, r1, r2, step);
+	//print_matrix(points);
+	int i;
+	for (i = 0; i < points->lastcol; i ++) {
+		add_edge(edges, points->m[0][i], points->m[1][i], points->m[2][i], 
+		            1 + points->m[0][i], points->m[1][i], points->m[2][i]);
+	}
 }
 
 /*======== void generate_torus() ==========
@@ -121,7 +147,25 @@ void add_torus( struct matrix * edges,
   ====================*/
 struct matrix * generate_torus( double cx, double cy, double cz,
                                 double r1, double r2, int step ) {
-  return NULL;
+	int size = (step + 1) * (step + 1);
+	struct matrix *points = new_matrix(4, size);
+	int p, t, i;
+	i = 0;
+	for (p = 0; p <= step; p ++) {
+		double p_rad = 2 * M_PI * p / step;
+		for (t = 0; t <= step; t ++) {
+			//printf("%d, %d, %d\n", p, t, i);
+			double t_rad = 2 * M_PI * t / step;
+			points->m[0][i] = cx + cos(p_rad) * (r1 * cos(t_rad) + r2);
+			points->m[1][i] = cy + r1 * sin(t_rad);
+			points->m[2][i] = cz - sin(p_rad) * (r1 * cos(t_rad) + r2);
+			points->m[3][i] = 1;
+			i ++;
+		}
+	}
+	points->lastcol = size;
+	//print_matrix(points);
+	return points;
 }
 
 /*======== void add_circle() ==========
