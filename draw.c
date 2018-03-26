@@ -69,6 +69,7 @@ void add_sphere( struct matrix * edges,
 		add_edge(edges, points->m[0][i], points->m[1][i], points->m[2][i], 
 		            1 + points->m[0][i], points->m[1][i], points->m[2][i]);
 	}
+	free_matrix(points);
 }
 
 /*======== void generate_sphere() ==========
@@ -131,6 +132,7 @@ void add_torus( struct matrix * edges,
 		add_edge(edges, points->m[0][i], points->m[1][i], points->m[2][i], 
 		            1 + points->m[0][i], points->m[1][i], points->m[2][i]);
 	}
+	free_matrix(points);
 }
 
 /*======== void generate_torus() ==========
